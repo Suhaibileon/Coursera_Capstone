@@ -1,0 +1,1055 @@
++*In[1]:*+
+[source, ipython3]
+----
+!pip install beautifulsoup4
+!pip install lxml
+import requests # library to handle requests
+import pandas as pd # library for data analsysis
+import numpy as np # library to handle data in a vectorized manner
+import random # library for random number generation
+
+!conda install -c conda-forge geopy --yes 
+from geopy.geocoders import Nominatim # module to convert an address into latitude and longitude values
+
+# libraries for displaying images
+from IPython.display import Image 
+from IPython.core.display import HTML 
+
+
+from IPython.display import display_html
+import pandas as pd
+import numpy as np
+    
+# tranforming json file into a pandas dataframe library
+from pandas.io.json import json_normalize
+
+!conda install -c conda-forge folium=0.5.0 --yes
+import folium # plotting library
+from bs4 import BeautifulSoup
+from sklearn.cluster import KMeans
+import matplotlib.cm as cm
+import matplotlib.colors as colors
+
+print('Folium installed')
+print('Libraries imported.')
+----
+
+
++*Out[1]:*+
+----
+Collecting beautifulsoup4
+[?25l  Downloading https://files.pythonhosted.org/packages/d1/41/e6495bd7d3781cee623ce23ea6ac73282a373088fcd0ddc809a047b18eae/beautifulsoup4-4.9.3-py3-none-any.whl (115kB)
+[K     |████████████████████████████████| 122kB 4.9MB/s eta 0:00:01
+[?25hCollecting soupsieve>1.2; python_version >= "3.0" (from beautifulsoup4)
+  Downloading https://files.pythonhosted.org/packages/6f/8f/457f4a5390eeae1cc3aeab89deb7724c965be841ffca6cfca9197482e470/soupsieve-2.0.1-py3-none-any.whl
+Installing collected packages: soupsieve, beautifulsoup4
+Successfully installed beautifulsoup4-4.9.3 soupsieve-2.0.1
+Collecting lxml
+[?25l  Downloading https://files.pythonhosted.org/packages/64/28/0b761b64ecbd63d272ed0e7a6ae6e4402fc37886b59181bfdf274424d693/lxml-4.6.1-cp36-cp36m-manylinux1_x86_64.whl (5.5MB)
+[K     |████████████████████████████████| 5.5MB 7.4MB/s eta 0:00:01
+[?25hInstalling collected packages: lxml
+Successfully installed lxml-4.6.1
+Collecting package metadata (current_repodata.json): done
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.9.1
+  latest version: 4.9.2
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/jupyterlab/conda/envs/python
+
+  added / updated specs:
+    - geopy
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    ca-certificates-2020.11.8  |       ha878542_0         145 KB  conda-forge
+    certifi-2020.11.8          |   py36h5fab9bb_0         150 KB  conda-forge
+    geographiclib-1.50         |             py_0          34 KB  conda-forge
+    geopy-2.0.0                |     pyh9f0ad1d_0          63 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:         392 KB
+
+The following NEW packages will be INSTALLED:
+
+  geographiclib      conda-forge/noarch::geographiclib-1.50-py_0
+  geopy              conda-forge/noarch::geopy-2.0.0-pyh9f0ad1d_0
+
+The following packages will be UPDATED:
+
+  ca-certificates                      2020.6.20-hecda079_0 --> 2020.11.8-ha878542_0
+  certifi                          2020.6.20-py36h9880bd3_2 --> 2020.11.8-py36h5fab9bb_0
+
+
+
+Downloading and Extracting Packages
+certifi-2020.11.8    | 150 KB    | ##################################### | 100% 
+ca-certificates-2020 | 145 KB    | ##################################### | 100% 
+geopy-2.0.0          | 63 KB     | ##################################### | 100% 
+geographiclib-1.50   | 34 KB     | ##################################### | 100% 
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+Collecting package metadata (current_repodata.json): done
+Solving environment: failed with initial frozen solve. Retrying with flexible solve.
+Collecting package metadata (repodata.json): done
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.9.1
+  latest version: 4.9.2
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/jupyterlab/conda/envs/python
+
+  added / updated specs:
+    - folium=0.5.0
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    altair-4.1.0               |             py_1         614 KB  conda-forge
+    attrs-20.3.0               |     pyhd3deb0d_0          41 KB  conda-forge
+    branca-0.4.1               |             py_0          26 KB  conda-forge
+    brotlipy-0.7.0             |py36he6145b8_1001         347 KB  conda-forge
+    chardet-3.0.4              |py36h9880bd3_1008         194 KB  conda-forge
+    cryptography-3.2.1         |   py36h6ec43e4_0         633 KB  conda-forge
+    entrypoints-0.3            |  pyhd8ed1ab_1003           8 KB  conda-forge
+    folium-0.5.0               |             py_0          45 KB  conda-forge
+    pandas-1.1.4               |   py36hd87012b_0        10.5 MB  conda-forge
+    pyrsistent-0.17.3          |   py36h1d69622_1          89 KB  conda-forge
+    pysocks-1.7.1              |   py36h9880bd3_2          27 KB  conda-forge
+    pytz-2020.4                |     pyhd8ed1ab_0         229 KB  conda-forge
+    requests-2.25.0            |     pyhd3deb0d_0          51 KB  conda-forge
+    toolz-0.11.1               |             py_0          46 KB  conda-forge
+    vincent-0.4.4              |             py_1          28 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        12.8 MB
+
+The following NEW packages will be INSTALLED:
+
+  altair             conda-forge/noarch::altair-4.1.0-py_1
+  attrs              conda-forge/noarch::attrs-20.3.0-pyhd3deb0d_0
+  branca             conda-forge/noarch::branca-0.4.1-py_0
+  brotlipy           conda-forge/linux-64::brotlipy-0.7.0-py36he6145b8_1001
+  chardet            conda-forge/linux-64::chardet-3.0.4-py36h9880bd3_1008
+  cryptography       conda-forge/linux-64::cryptography-3.2.1-py36h6ec43e4_0
+  entrypoints        conda-forge/noarch::entrypoints-0.3-pyhd8ed1ab_1003
+  folium             conda-forge/noarch::folium-0.5.0-py_0
+  idna               conda-forge/noarch::idna-2.10-pyh9f0ad1d_0
+  importlib_metadata conda-forge/noarch::importlib_metadata-2.0.0-1
+  jinja2             conda-forge/noarch::jinja2-2.11.2-pyh9f0ad1d_0
+  jsonschema         conda-forge/noarch::jsonschema-3.2.0-py_2
+  markupsafe         conda-forge/linux-64::markupsafe-1.1.1-py36he6145b8_2
+  pandas             conda-forge/linux-64::pandas-1.1.4-py36hd87012b_0
+  pyopenssl          conda-forge/noarch::pyopenssl-19.1.0-py_1
+  pyrsistent         conda-forge/linux-64::pyrsistent-0.17.3-py36h1d69622_1
+  pysocks            conda-forge/linux-64::pysocks-1.7.1-py36h9880bd3_2
+  pytz               conda-forge/noarch::pytz-2020.4-pyhd8ed1ab_0
+  requests           conda-forge/noarch::requests-2.25.0-pyhd3deb0d_0
+  toolz              conda-forge/noarch::toolz-0.11.1-py_0
+  urllib3            conda-forge/noarch::urllib3-1.25.11-py_0
+  vincent            conda-forge/noarch::vincent-0.4.4-py_1
+
+
+
+Downloading and Extracting Packages
+entrypoints-0.3      | 8 KB      | ##################################### | 100% 
+attrs-20.3.0         | 41 KB     | ##################################### | 100% 
+pyrsistent-0.17.3    | 89 KB     | ##################################### | 100% 
+pytz-2020.4          | 229 KB    | ##################################### | 100% 
+cryptography-3.2.1   | 633 KB    | ##################################### | 100% 
+folium-0.5.0         | 45 KB     | ##################################### | 100% 
+pandas-1.1.4         | 10.5 MB   | ##################################### | 100% 
+pysocks-1.7.1        | 27 KB     | ##################################### | 100% 
+brotlipy-0.7.0       | 347 KB    | ##################################### | 100% 
+chardet-3.0.4        | 194 KB    | ##################################### | 100% 
+branca-0.4.1         | 26 KB     | ##################################### | 100% 
+requests-2.25.0      | 51 KB     | ##################################### | 100% 
+altair-4.1.0         | 614 KB    | ##################################### | 100% 
+toolz-0.11.1         | 46 KB     | ##################################### | 100% 
+vincent-0.4.4        | 28 KB     | ##################################### | 100% 
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+Folium installed
+Libraries imported.
+----
+
+
++*In[4]:*+
+[source, ipython3]
+----
+source = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canada:_M').text
+soup=BeautifulSoup(source,'lxml')
+print(soup.title)
+from IPython.display import display_html
+tab = str(soup.table)
+display_html(tab,raw=True)
+----
+
+
++*Out[4]:*+
+----
+<title>List of postal codes of Canada: M - Wikipedia</title>
+
+[cols=",,",options="header",]
+|===
+|Postal Code |Borough |Neighbourhood
+|M1A |Not assigned |Not assigned
+
+|M2A |Not assigned |Not assigned
+
+|M3A |North York |Parkwoods
+
+|M4A |North York |Victoria Village
+
+|M5A |Downtown Toronto |Regent Park, Harbourfront
+
+|M6A |North York |Lawrence Manor, Lawrence Heights
+
+|M7A |Downtown Toronto |Queen's Park, Ontario Provincial Government
+
+|M8A |Not assigned |Not assigned
+
+|M9A |Etobicoke |Islington Avenue, Humber Valley Village
+
+|M1B |Scarborough |Malvern, Rouge
+
+|M2B |Not assigned |Not assigned
+
+|M3B |North York |Don Mills
+
+|M4B |East York |Parkview Hill, Woodbine Gardens
+
+|M5B |Downtown Toronto |Garden District, Ryerson
+
+|M6B |North York |Glencairn
+
+|M7B |Not assigned |Not assigned
+
+|M8B |Not assigned |Not assigned
+
+|M9B |Etobicoke |West Deane Park, Princess Gardens, Martin Grove,
+Islington, Cloverdale
+
+|M1C |Scarborough |Rouge Hill, Port Union, Highland Creek
+
+|M2C |Not assigned |Not assigned
+
+|M3C |North York |Don Mills
+
+|M4C |East York |Woodbine Heights
+
+|M5C |Downtown Toronto |St. James Town
+
+|M6C |York |Humewood-Cedarvale
+
+|M7C |Not assigned |Not assigned
+
+|M8C |Not assigned |Not assigned
+
+|M9C |Etobicoke |Eringate, Bloordale Gardens, Old Burnhamthorpe,
+Markland Wood
+
+|M1E |Scarborough |Guildwood, Morningside, West Hill
+
+|M2E |Not assigned |Not assigned
+
+|M3E |Not assigned |Not assigned
+
+|M4E |East Toronto |The Beaches
+
+|M5E |Downtown Toronto |Berczy Park
+
+|M6E |York |Caledonia-Fairbanks
+
+|M7E |Not assigned |Not assigned
+
+|M8E |Not assigned |Not assigned
+
+|M9E |Not assigned |Not assigned
+
+|M1G |Scarborough |Woburn
+
+|M2G |Not assigned |Not assigned
+
+|M3G |Not assigned |Not assigned
+
+|M4G |East York |Leaside
+
+|M5G |Downtown Toronto |Central Bay Street
+
+|M6G |Downtown Toronto |Christie
+
+|M7G |Not assigned |Not assigned
+
+|M8G |Not assigned |Not assigned
+
+|M9G |Not assigned |Not assigned
+
+|M1H |Scarborough |Cedarbrae
+
+|M2H |North York |Hillcrest Village
+
+|M3H |North York |Bathurst Manor, Wilson Heights, Downsview North
+
+|M4H |East York |Thorncliffe Park
+
+|M5H |Downtown Toronto |Richmond, Adelaide, King
+
+|M6H |West Toronto |Dufferin, Dovercourt Village
+
+|M7H |Not assigned |Not assigned
+
+|M8H |Not assigned |Not assigned
+
+|M9H |Not assigned |Not assigned
+
+|M1J |Scarborough |Scarborough Village
+
+|M2J |North York |Fairview, Henry Farm, Oriole
+
+|M3J |North York |Northwood Park, York University
+
+|M4J |East York |East Toronto, Broadview North (Old East York)
+
+|M5J |Downtown Toronto |Harbourfront East, Union Station, Toronto
+Islands
+
+|M6J |West Toronto |Little Portugal, Trinity
+
+|M7J |Not assigned |Not assigned
+
+|M8J |Not assigned |Not assigned
+
+|M9J |Not assigned |Not assigned
+
+|M1K |Scarborough |Kennedy Park, Ionview, East Birchmount Park
+
+|M2K |North York |Bayview Village
+
+|M3K |North York |Downsview
+
+|M4K |East Toronto |The Danforth West, Riverdale
+
+|M5K |Downtown Toronto |Toronto Dominion Centre, Design Exchange
+
+|M6K |West Toronto |Brockton, Parkdale Village, Exhibition Place
+
+|M7K |Not assigned |Not assigned
+
+|M8K |Not assigned |Not assigned
+
+|M9K |Not assigned |Not assigned
+
+|M1L |Scarborough |Golden Mile, Clairlea, Oakridge
+
+|M2L |North York |York Mills, Silver Hills
+
+|M3L |North York |Downsview
+
+|M4L |East Toronto |India Bazaar, The Beaches West
+
+|M5L |Downtown Toronto |Commerce Court, Victoria Hotel
+
+|M6L |North York |North Park, Maple Leaf Park, Upwood Park
+
+|M7L |Not assigned |Not assigned
+
+|M8L |Not assigned |Not assigned
+
+|M9L |North York |Humber Summit
+
+|M1M |Scarborough |Cliffside, Cliffcrest, Scarborough Village West
+
+|M2M |North York |Willowdale, Newtonbrook
+
+|M3M |North York |Downsview
+
+|M4M |East Toronto |Studio District
+
+|M5M |North York |Bedford Park, Lawrence Manor East
+
+|M6M |York |Del Ray, Mount Dennis, Keelsdale and Silverthorn
+
+|M7M |Not assigned |Not assigned
+
+|M8M |Not assigned |Not assigned
+
+|M9M |North York |Humberlea, Emery
+
+|M1N |Scarborough |Birch Cliff, Cliffside West
+
+|M2N |North York |Willowdale, Willowdale East
+
+|M3N |North York |Downsview
+
+|M4N |Central Toronto |Lawrence Park
+
+|M5N |Central Toronto |Roselawn
+
+|M6N |York |Runnymede, The Junction North
+
+|M7N |Not assigned |Not assigned
+
+|M8N |Not assigned |Not assigned
+
+|M9N |York |Weston
+
+|M1P |Scarborough |Dorset Park, Wexford Heights, Scarborough Town Centre
+
+|M2P |North York |York Mills West
+
+|M3P |Not assigned |Not assigned
+
+|M4P |Central Toronto |Davisville North
+
+|M5P |Central Toronto |Forest Hill North & West, Forest Hill Road Park
+
+|M6P |West Toronto |High Park, The Junction South
+
+|M7P |Not assigned |Not assigned
+
+|M8P |Not assigned |Not assigned
+
+|M9P |Etobicoke |Westmount
+
+|M1R |Scarborough |Wexford, Maryvale
+
+|M2R |North York |Willowdale, Willowdale West
+
+|M3R |Not assigned |Not assigned
+
+|M4R |Central Toronto |North Toronto West, Lawrence Park
+
+|M5R |Central Toronto |The Annex, North Midtown, Yorkville
+
+|M6R |West Toronto |Parkdale, Roncesvalles
+
+|M7R |Mississauga |Canada Post Gateway Processing Centre
+
+|M8R |Not assigned |Not assigned
+
+|M9R |Etobicoke |Kingsview Village, St. Phillips, Martin Grove Gardens,
+Richview Gardens
+
+|M1S |Scarborough |Agincourt
+
+|M2S |Not assigned |Not assigned
+
+|M3S |Not assigned |Not assigned
+
+|M4S |Central Toronto |Davisville
+
+|M5S |Downtown Toronto |University of Toronto, Harbord
+
+|M6S |West Toronto |Runnymede, Swansea
+
+|M7S |Not assigned |Not assigned
+
+|M8S |Not assigned |Not assigned
+
+|M9S |Not assigned |Not assigned
+
+|M1T |Scarborough |Clarks Corners, Tam O'Shanter, Sullivan
+
+|M2T |Not assigned |Not assigned
+
+|M3T |Not assigned |Not assigned
+
+|M4T |Central Toronto |Moore Park, Summerhill East
+
+|M5T |Downtown Toronto |Kensington Market, Chinatown, Grange Park
+
+|M6T |Not assigned |Not assigned
+
+|M7T |Not assigned |Not assigned
+
+|M8T |Not assigned |Not assigned
+
+|M9T |Not assigned |Not assigned
+
+|M1V |Scarborough |Milliken, Agincourt North, Steeles East, L'Amoreaux
+East
+
+|M2V |Not assigned |Not assigned
+
+|M3V |Not assigned |Not assigned
+
+|M4V |Central Toronto |Summerhill West, Rathnelly, South Hill, Forest
+Hill SE, Deer Park
+
+|M5V |Downtown Toronto |CN Tower, King and Spadina, Railway Lands,
+Harbourfront West, Bathurst Quay, South Niagara, Island airport
+
+|M6V |Not assigned |Not assigned
+
+|M7V |Not assigned |Not assigned
+
+|M8V |Etobicoke |New Toronto, Mimico South, Humber Bay Shores
+
+|M9V |Etobicoke |South Steeles, Silverstone, Humbergate, Jamestown,
+Mount Olive, Beaumond Heights, Thistletown, Albion Gardens
+
+|M1W |Scarborough |Steeles West, L'Amoreaux West
+
+|M2W |Not assigned |Not assigned
+
+|M3W |Not assigned |Not assigned
+
+|M4W |Downtown Toronto |Rosedale
+
+|M5W |Downtown Toronto |Stn A PO Boxes
+
+|M6W |Not assigned |Not assigned
+
+|M7W |Not assigned |Not assigned
+
+|M8W |Etobicoke |Alderwood, Long Branch
+
+|M9W |Etobicoke |Northwest, West Humber - Clairville
+
+|M1X |Scarborough |Upper Rouge
+
+|M2X |Not assigned |Not assigned
+
+|M3X |Not assigned |Not assigned
+
+|M4X |Downtown Toronto |St. James Town, Cabbagetown
+
+|M5X |Downtown Toronto |First Canadian Place, Underground city
+
+|M6X |Not assigned |Not assigned
+
+|M7X |Not assigned |Not assigned
+
+|M8X |Etobicoke |The Kingsway, Montgomery Road, Old Mill North
+
+|M9X |Not assigned |Not assigned
+
+|M1Y |Not assigned |Not assigned
+
+|M2Y |Not assigned |Not assigned
+
+|M3Y |Not assigned |Not assigned
+
+|M4Y |Downtown Toronto |Church and Wellesley
+
+|M5Y |Not assigned |Not assigned
+
+|M6Y |Not assigned |Not assigned
+
+|M7Y |East Toronto |Business reply mail Processing Centre, South Central
+Letter Processing Plant Toronto
+
+|M8Y |Etobicoke |Old Mill South, King's Mill Park, Sunnylea, Humber Bay,
+Mimico NE, The Queensway East, Royal York South East, Kingsway Park
+South East
+
+|M9Y |Not assigned |Not assigned
+
+|M1Z |Not assigned |Not assigned
+
+|M2Z |Not assigned |Not assigned
+
+|M3Z |Not assigned |Not assigned
+
+|M4Z |Not assigned |Not assigned
+
+|M5Z |Not assigned |Not assigned
+
+|M6Z |Not assigned |Not assigned
+
+|M7Z |Not assigned |Not assigned
+
+|M8Z |Etobicoke |Mimico NW, The Queensway West, South of Bloor, Kingsway
+Park South West, Royal York South West
+
+|M9Z |Not assigned |Not assigned
+|===
+----
+
+
++*In[5]:*+
+[source, ipython3]
+----
+dfs = pd.read_html(tab)
+df=dfs[0]
+df.head()
+----
+
+
++*Out[5]:*+
+----
+[cols=",,,",options="header",]
+|===
+| |Postal Code |Borough |Neighbourhood
+|0 |M1A |Not assigned |Not assigned
+|1 |M2A |Not assigned |Not assigned
+|2 |M3A |North York |Parkwoods
+|3 |M4A |North York |Victoria Village
+|4 |M5A |Downtown Toronto |Regent Park, Harbourfront
+|===
+----
+
+
++*In[6]:*+
+[source, ipython3]
+----
+df1 = df[df.Borough != 'Not assigned']
+----
+
+
++*In[7]:*+
+[source, ipython3]
+----
+df2 = df1.groupby(['Postal Code','Borough'], sort=False).agg(', '.join)
+df2.reset_index(inplace=True)
+----
+
+
++*In[8]:*+
+[source, ipython3]
+----
+df2['Neighbourhood'] = np.where(df2['Neighbourhood'] == 'Not assigned',df2['Borough'], df2['Neighbourhood'])
+
+df2
+----
+
+
++*Out[8]:*+
+----
+[cols=",,,",options="header",]
+|===
+| |Postal Code |Borough |Neighbourhood
+|0 |M3A |North York |Parkwoods
+
+|1 |M4A |North York |Victoria Village
+
+|2 |M5A |Downtown Toronto |Regent Park, Harbourfront
+
+|3 |M6A |North York |Lawrence Manor, Lawrence Heights
+
+|4 |M7A |Downtown Toronto |Queen's Park, Ontario Provincial Government
+
+|... |... |... |...
+
+|98 |M8X |Etobicoke |The Kingsway, Montgomery Road, Old Mill North
+
+|99 |M4Y |Downtown Toronto |Church and Wellesley
+
+|100 |M7Y |East Toronto |Business reply mail Processing Centre, South
+C...
+
+|101 |M8Y |Etobicoke |Old Mill South, King's Mill Park, Sunnylea, Hu...
+
+|102 |M8Z |Etobicoke |Mimico NW, The Queensway West, South of Bloor,...
+|===
+
+103 rows × 3 columns
+----
+
+
++*In[9]:*+
+[source, ipython3]
+----
+lat_lon = pd.read_csv('https://cocl.us/Geospatial_data')
+lat_lon.head()
+----
+
+
++*Out[9]:*+
+----
+[cols=",,,",options="header",]
+|===
+| |Postal Code |Latitude |Longitude
+|0 |M1B |43.806686 |-79.194353
+|1 |M1C |43.784535 |-79.160497
+|2 |M1E |43.763573 |-79.188711
+|3 |M1G |43.770992 |-79.216917
+|4 |M1H |43.773136 |-79.239476
+|===
+----
+
+
++*In[10]:*+
+[source, ipython3]
+----
+df3 = pd.merge(df2,lat_lon,on='Postal Code')
+df3.head()
+
+----
+
+
++*Out[10]:*+
+----
+[cols=",,,,,",options="header",]
+|===
+| |Postal Code |Borough |Neighbourhood |Latitude |Longitude
+|0 |M3A |North York |Parkwoods |43.753259 |-79.329656
+
+|1 |M4A |North York |Victoria Village |43.725882 |-79.315572
+
+|2 |M5A |Downtown Toronto |Regent Park, Harbourfront |43.654260
+|-79.360636
+
+|3 |M6A |North York |Lawrence Manor, Lawrence Heights |43.718518
+|-79.464763
+
+|4 |M7A |Downtown Toronto |Queen's Park, Ontario Provincial Government
+|43.662301 |-79.389494
+|===
+----
+
+
++*In[11]:*+
+[source, ipython3]
+----
+df4 = df3[df3['Borough'].str.contains('Toronto',regex=False)]
+df4
+----
+
+
++*Out[11]:*+
+----
+[cols=",,,,,",options="header",]
+|===
+| |Postal Code |Borough |Neighbourhood |Latitude |Longitude
+|2 |M5A |Downtown Toronto |Regent Park, Harbourfront |43.654260
+|-79.360636
+
+|4 |M7A |Downtown Toronto |Queen's Park, Ontario Provincial Government
+|43.662301 |-79.389494
+
+|9 |M5B |Downtown Toronto |Garden District, Ryerson |43.657162
+|-79.378937
+
+|15 |M5C |Downtown Toronto |St. James Town |43.651494 |-79.375418
+
+|19 |M4E |East Toronto |The Beaches |43.676357 |-79.293031
+
+|20 |M5E |Downtown Toronto |Berczy Park |43.644771 |-79.373306
+
+|24 |M5G |Downtown Toronto |Central Bay Street |43.657952 |-79.387383
+
+|25 |M6G |Downtown Toronto |Christie |43.669542 |-79.422564
+
+|30 |M5H |Downtown Toronto |Richmond, Adelaide, King |43.650571
+|-79.384568
+
+|31 |M6H |West Toronto |Dufferin, Dovercourt Village |43.669005
+|-79.442259
+
+|36 |M5J |Downtown Toronto |Harbourfront East, Union Station, Toronto
+Islands |43.640816 |-79.381752
+
+|37 |M6J |West Toronto |Little Portugal, Trinity |43.647927 |-79.419750
+
+|41 |M4K |East Toronto |The Danforth West, Riverdale |43.679557
+|-79.352188
+
+|42 |M5K |Downtown Toronto |Toronto Dominion Centre, Design Exchange
+|43.647177 |-79.381576
+
+|43 |M6K |West Toronto |Brockton, Parkdale Village, Exhibition Place
+|43.636847 |-79.428191
+
+|47 |M4L |East Toronto |India Bazaar, The Beaches West |43.668999
+|-79.315572
+
+|48 |M5L |Downtown Toronto |Commerce Court, Victoria Hotel |43.648198
+|-79.379817
+
+|54 |M4M |East Toronto |Studio District |43.659526 |-79.340923
+
+|61 |M4N |Central Toronto |Lawrence Park |43.728020 |-79.388790
+
+|62 |M5N |Central Toronto |Roselawn |43.711695 |-79.416936
+
+|67 |M4P |Central Toronto |Davisville North |43.712751 |-79.390197
+
+|68 |M5P |Central Toronto |Forest Hill North & West, Forest Hill Road
+Park |43.696948 |-79.411307
+
+|69 |M6P |West Toronto |High Park, The Junction South |43.661608
+|-79.464763
+
+|73 |M4R |Central Toronto |North Toronto West, Lawrence Park |43.715383
+|-79.405678
+
+|74 |M5R |Central Toronto |The Annex, North Midtown, Yorkville
+|43.672710 |-79.405678
+
+|75 |M6R |West Toronto |Parkdale, Roncesvalles |43.648960 |-79.456325
+
+|79 |M4S |Central Toronto |Davisville |43.704324 |-79.388790
+
+|80 |M5S |Downtown Toronto |University of Toronto, Harbord |43.662696
+|-79.400049
+
+|81 |M6S |West Toronto |Runnymede, Swansea |43.651571 |-79.484450
+
+|83 |M4T |Central Toronto |Moore Park, Summerhill East |43.689574
+|-79.383160
+
+|84 |M5T |Downtown Toronto |Kensington Market, Chinatown, Grange Park
+|43.653206 |-79.400049
+
+|86 |M4V |Central Toronto |Summerhill West, Rathnelly, South Hill,
+Forest... |43.686412 |-79.400049
+
+|87 |M5V |Downtown Toronto |CN Tower, King and Spadina, Railway Lands,
+Har... |43.628947 |-79.394420
+
+|91 |M4W |Downtown Toronto |Rosedale |43.679563 |-79.377529
+
+|92 |M5W |Downtown Toronto |Stn A PO Boxes |43.646435 |-79.374846
+
+|96 |M4X |Downtown Toronto |St. James Town, Cabbagetown |43.667967
+|-79.367675
+
+|97 |M5X |Downtown Toronto |First Canadian Place, Underground city
+|43.648429 |-79.382280
+
+|99 |M4Y |Downtown Toronto |Church and Wellesley |43.665860 |-79.383160
+
+|100 |M7Y |East Toronto |Business reply mail Processing Centre, South
+C... |43.662744 |-79.321558
+|===
+----
+
+
++*In[12]:*+
+[source, ipython3]
+----
+map_toronto = folium.Map(location=[43.651070,-79.347015],zoom_start=10)
+
+for lat,lng,borough,neighbourhood in zip(df4['Latitude'],df4['Longitude'],df4['Borough'],df4['Neighbourhood']):
+    label = '{}, {}'.format(neighbourhood, borough)
+    label = folium.Popup(label, parse_html=True)
+    folium.CircleMarker(
+    [lat,lng],
+    radius=5,
+    popup=label,
+    color='blue',
+    fill=True,
+    fill_color='#3186cc',
+    fill_opacity=0.7,
+    parse_html=False).add_to(map_toronto)
+map_toronto
+----
+
+
++*Out[12]:*+
+----
+Make this Notebook Trusted to load map: File -> Trust Notebook
+----
+
+
++*In[13]:*+
+[source, ipython3]
+----
+k=5
+toronto_clustering = df4.drop(['Postal Code','Borough','Neighbourhood'],1)
+kmeans = KMeans(n_clusters = k,random_state=0).fit(toronto_clustering)
+kmeans.labels_
+df4.insert(0, 'Cluster Labels', kmeans.labels_)
+----
+
+
++*In[14]:*+
+[source, ipython3]
+----
+df4
+----
+
+
++*Out[14]:*+
+----
+[cols=",,,,,,",options="header",]
+|===
+| |Cluster Labels |Postal Code |Borough |Neighbourhood |Latitude
+|Longitude
+|2 |0 |M5A |Downtown Toronto |Regent Park, Harbourfront |43.654260
+|-79.360636
+
+|4 |0 |M7A |Downtown Toronto |Queen's Park, Ontario Provincial
+Government |43.662301 |-79.389494
+
+|9 |0 |M5B |Downtown Toronto |Garden District, Ryerson |43.657162
+|-79.378937
+
+|15 |0 |M5C |Downtown Toronto |St. James Town |43.651494 |-79.375418
+
+|19 |4 |M4E |East Toronto |The Beaches |43.676357 |-79.293031
+
+|20 |0 |M5E |Downtown Toronto |Berczy Park |43.644771 |-79.373306
+
+|24 |0 |M5G |Downtown Toronto |Central Bay Street |43.657952 |-79.387383
+
+|25 |3 |M6G |Downtown Toronto |Christie |43.669542 |-79.422564
+
+|30 |0 |M5H |Downtown Toronto |Richmond, Adelaide, King |43.650571
+|-79.384568
+
+|31 |1 |M6H |West Toronto |Dufferin, Dovercourt Village |43.669005
+|-79.442259
+
+|36 |0 |M5J |Downtown Toronto |Harbourfront East, Union Station, Toronto
+Islands |43.640816 |-79.381752
+
+|37 |3 |M6J |West Toronto |Little Portugal, Trinity |43.647927
+|-79.419750
+
+|41 |4 |M4K |East Toronto |The Danforth West, Riverdale |43.679557
+|-79.352188
+
+|42 |0 |M5K |Downtown Toronto |Toronto Dominion Centre, Design Exchange
+|43.647177 |-79.381576
+
+|43 |3 |M6K |West Toronto |Brockton, Parkdale Village, Exhibition Place
+|43.636847 |-79.428191
+
+|47 |4 |M4L |East Toronto |India Bazaar, The Beaches West |43.668999
+|-79.315572
+
+|48 |0 |M5L |Downtown Toronto |Commerce Court, Victoria Hotel |43.648198
+|-79.379817
+
+|54 |4 |M4M |East Toronto |Studio District |43.659526 |-79.340923
+
+|61 |2 |M4N |Central Toronto |Lawrence Park |43.728020 |-79.388790
+
+|62 |2 |M5N |Central Toronto |Roselawn |43.711695 |-79.416936
+
+|67 |2 |M4P |Central Toronto |Davisville North |43.712751 |-79.390197
+
+|68 |2 |M5P |Central Toronto |Forest Hill North & West, Forest Hill Road
+Park |43.696948 |-79.411307
+
+|69 |1 |M6P |West Toronto |High Park, The Junction South |43.661608
+|-79.464763
+
+|73 |2 |M4R |Central Toronto |North Toronto West, Lawrence Park
+|43.715383 |-79.405678
+
+|74 |3 |M5R |Central Toronto |The Annex, North Midtown, Yorkville
+|43.672710 |-79.405678
+
+|75 |1 |M6R |West Toronto |Parkdale, Roncesvalles |43.648960 |-79.456325
+
+|79 |2 |M4S |Central Toronto |Davisville |43.704324 |-79.388790
+
+|80 |3 |M5S |Downtown Toronto |University of Toronto, Harbord |43.662696
+|-79.400049
+
+|81 |1 |M6S |West Toronto |Runnymede, Swansea |43.651571 |-79.484450
+
+|83 |2 |M4T |Central Toronto |Moore Park, Summerhill East |43.689574
+|-79.383160
+
+|84 |3 |M5T |Downtown Toronto |Kensington Market, Chinatown, Grange Park
+|43.653206 |-79.400049
+
+|86 |2 |M4V |Central Toronto |Summerhill West, Rathnelly, South Hill,
+Forest... |43.686412 |-79.400049
+
+|87 |0 |M5V |Downtown Toronto |CN Tower, King and Spadina, Railway
+Lands, Har... |43.628947 |-79.394420
+
+|91 |0 |M4W |Downtown Toronto |Rosedale |43.679563 |-79.377529
+
+|92 |0 |M5W |Downtown Toronto |Stn A PO Boxes |43.646435 |-79.374846
+
+|96 |0 |M4X |Downtown Toronto |St. James Town, Cabbagetown |43.667967
+|-79.367675
+
+|97 |0 |M5X |Downtown Toronto |First Canadian Place, Underground city
+|43.648429 |-79.382280
+
+|99 |0 |M4Y |Downtown Toronto |Church and Wellesley |43.665860
+|-79.383160
+
+|100 |4 |M7Y |East Toronto |Business reply mail Processing Centre, South
+C... |43.662744 |-79.321558
+|===
+----
+
+
++*In[15]:*+
+[source, ipython3]
+----
+# create map
+map_clusters = folium.Map(location=[43.651070,-79.347015],zoom_start=10)
+
+# set color scheme for the clusters
+x = np.arange(k)
+ys = [i + x + (i*x)**2 for i in range(k)]
+colors_array = cm.rainbow(np.linspace(0, 1, len(ys)))
+rainbow = [colors.rgb2hex(i) for i in colors_array]
+
+# add markers to the map
+markers_colors = []
+for lat, lon, neighbourhood, cluster in zip(df4['Latitude'], df4['Longitude'], df4['Neighbourhood'], df4['Cluster Labels']):
+    label = folium.Popup(' Cluster ' + str(cluster), parse_html=True)
+    folium.CircleMarker(
+        [lat, lon],
+        radius=5,
+        popup=label,
+        color=rainbow[cluster-1],
+        fill=True,
+        fill_color=rainbow[cluster-1],
+        fill_opacity=0.7).add_to(map_clusters)
+       
+map_clusters
+----
+
+
++*Out[15]:*+
+----
+Make this Notebook Trusted to load map: File -> Trust Notebook
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
